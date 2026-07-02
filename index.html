@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A premium music streaming app powered by JioSaavn. Search, discover, and play your favorite songs, albums, and playlists.">
+  <title>Music — Listen Now</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-container">
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo-icon">♫</div>
+      <h1>Music</h1>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Discover</div>
+      <div class="sidebar-nav-item active" data-page="home">
+        <span class="nav-icon">🏠</span>
+        <span>Listen Now</span>
+      </div>
+      <div class="sidebar-nav-item" data-page="browse">
+        <span class="nav-icon">🔍</span>
+        <span>Browse</span>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Library</div>
+      <div class="sidebar-nav-item" data-page="favorites">
+        <span class="nav-icon">❤️</span>
+        <span>Liked Songs</span>
+      </div>
+      <div class="sidebar-nav-item" data-page="queue">
+        <span class="nav-icon">📋</span>
+        <span>Up Next</span>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Playlists</div>
+      <div class="sidebar-nav-item" id="nav-recently-played">
+        <span class="nav-icon">🕒</span>
+        <span>Recently Played</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Sidebar overlay for mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="main-content" id="mainContent">
+    <!-- Header -->
+    <header class="content-header" id="contentHeader">
+      <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+      <div class="header-nav-arrows">
+        <button id="btnBack" aria-label="Go back">←</button>
+        <button id="btnForward" aria-label="Go forward">→</button>
+      </div>
+      <div class="header-search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search songs, albums, artists..." autocomplete="off">
+      </div>
+      <div class="header-right"></div>
+    </header>
+
+    <!-- ===== HOME PAGE ===== -->
+    <section class="page active" id="page-home">
+      <!-- Hero Banner -->
+      <div class="hero-banner" id="heroBanner">
+        <div class="hero-banner-bg"></div>
+        <div class="hero-banner-content">
+          <span class="hero-tag">Featured</span>
+          <h2 class="hero-title">Discover New Music</h2>
+          <p class="hero-desc">Explore trending songs, albums, and playlists from across the world. Search for anything above to get started.</p>
+        </div>
+      </div>
+
+      <!-- Trending Songs -->
+      <div class="section-header">
+        <h2 class="section-title">Trending Now</h2>
+      </div>
+      <div class="card-grid songs-grid" id="trendingSongs">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Popular Albums -->
+      <div class="section-header">
+        <h2 class="section-title">Popular Albums</h2>
+      </div>
+      <div class="card-grid albums-grid" id="popularAlbums">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Genres -->
+      <div class="section-header">
+        <h2 class="section-title">Browse by Genre</h2>
+      </div>
+      <div class="card-grid genres-grid" id="genresGrid">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Top Artists -->
+      <div class="section-header">
+        <h2 class="section-title">Top Artists</h2>
+      </div>
+      <div class="card-grid artists-grid" id="topArtists">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- ===== SEARCH RESULTS PAGE ===== -->
+    <section class="page" id="page-search">
+      <h1 class="page-title" id="searchTitle">Search Results</h1>
+      <div class="search-tabs" id="searchTabs">
+        <button class="search-tab active" data-tab="songs">Songs</button>
+        <button class="search-tab" data-tab="albums">Albums</button>
+        <button class="search-tab" data-tab="artists">Artists</button>
+        <button class="search-tab" data-tab="playlists">Playlists</button>
+      </div>
+      <div class="search-results-section active" id="search-songs">
+        <div class="card-grid songs-grid" id="searchSongsGrid"></div>
+      </div>
+      <div class="search-results-section" id="search-albums">
+        <div class="card-grid albums-grid" id="searchAlbumsGrid"></div>
+      </div>
+      <div class="search-results-section" id="search-artists">
+        <div class="card-grid artists-grid" id="searchArtistsGrid"></div>
+      </div>
+      <div class="search-results-section" id="search-playlists">
+        <div class="card-grid playlists-grid" id="searchPlaylistsGrid"></div>
+      </div>
+    </section>
+
+    <!-- ===== BROWSE PAGE ===== -->
+    <section class="page" id="page-browse">
+      <h1 class="page-title">Browse</h1>
+      <div class="section-header">
+        <h2 class="section-title">All Genres</h2>
+      </div>
+      <div class="card-grid genres-grid" id="browseGenresGrid"></div>
+
+      <div class="section-header mt-4">
+        <h2 class="section-title">Top Picks For You</h2>
+      </div>
+      <div class="card-grid songs-grid" id="browseTopPicks"></div>
+    </section>
+
+    <!-- ===== DETAIL PAGE (Album / Playlist) ===== -->
+    <section class="page" id="page-detail">
+      <div class="detail-hero" id="detailHero">
+        <div class="detail-hero-artwork" id="detailArtwork">
+          <img src="" alt="Album art" id="detailArtImg">
+        </div>
+        <div class="detail-hero-info">
+          <span class="detail-hero-type" id="detailType">ALBUM</span>
+          <h1 class="detail-hero-title" id="detailTitle">Album Title</h1>
+          <div class="detail-hero-meta" id="detailMeta"></div>
+          <div class="detail-actions">
+            <button class="btn-play-all" id="btnPlayAll">
+              <span>▶</span> Play
+            </button>
+            <button class="btn-shuffle" id="btnShuffle">
+              <span>⤮</span> Shuffle
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="track-list" id="detailTrackList">
+        <div class="track-list-header">
+          <span>#</span>
+          <span>Title</span>
+          <span>Album</span>
+          <span>Duration</span>
+          <span></span>
+        </div>
+        <div id="detailTracks"></div>
+      </div>
+    </section>
+
+    <!-- ===== FAVORITES PAGE ===== -->
+    <section class="page" id="page-favorites">
+      <div class="favorites-header">
+        <div class="favorites-icon">♥</div>
+        <div class="favorites-info">
+          <h2>Liked Songs</h2>
+          <p id="favoritesCount">0 songs</p>
+          <div class="detail-actions mt-2">
+            <button class="btn-play-all" id="btnPlayFavorites">
+              <span>▶</span> Play All
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="track-list" id="favoritesTrackList">
+        <div class="track-list-header">
+          <span>#</span>
+          <span>Title</span>
+          <span>Album</span>
+          <span>Duration</span>
+          <span></span>
+        </div>
+        <div id="favoritesTracks"></div>
+      </div>
+      <div class="empty-state" id="favoritesEmpty" style="display:none;">
+        <div class="empty-icon">♥</div>
+        <h3>No Liked Songs Yet</h3>
+        <p>Songs you like will appear here. Start exploring and tap the heart icon to save your favorites.</p>
+      </div>
+    </section>
+
+    <!-- ===== QUEUE PAGE ===== -->
+    <section class="page" id="page-queue">
+      <h1 class="page-title">Up Next</h1>
+      <div class="track-list" id="queueTrackList">
+        <div class="track-list-header">
+          <span>#</span>
+          <span>Title</span>
+          <span>Album</span>
+          <span>Duration</span>
+          <span></span>
+        </div>
+        <div id="queueTracks"></div>
+      </div>
+      <div class="empty-state" id="queueEmpty" style="display:none;">
+        <div class="empty-icon">📋</div>
+        <h3>Queue is Empty</h3>
+        <p>Play a song or album to start building your queue.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ========== PLAYER BAR ========== -->
+<div class="player-bar" id="playerBar">
+  <!-- Left: Song Info -->
+  <div class="player-left">
+    <div class="player-artwork" id="playerArtwork">
+      <img src="" alt="Now playing" id="playerArtImg">
+    </div>
+    <div class="player-song-info">
+      <div class="player-song-title" id="playerTitle">Not Playing</div>
+      <div class="player-song-artist" id="playerArtist">—</div>
+    </div>
+    <button class="player-like" id="playerLikeBtn" aria-label="Like song">♡</button>
+  </div>
+
+  <!-- Center: Controls -->
+  <div class="player-center">
+    <div class="player-controls">
+      <button id="btnShuffle2" aria-label="Shuffle" title="Shuffle">⤮</button>
+      <button id="btnPrev" aria-label="Previous" title="Previous">⏮</button>
+      <button class="btn-play-pause" id="btnPlayPause" aria-label="Play">▶</button>
+      <button id="btnNext" aria-label="Next" title="Next">⏭</button>
+      <button id="btnRepeat" aria-label="Repeat" title="Repeat">🔁</button>
+    </div>
+    <div class="player-progress">
+      <span class="player-time" id="playerCurrentTime">0:00</span>
+      <div class="progress-bar-container" id="progressBar">
+        <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <span class="player-time" id="playerTotalTime">0:00</span>
+    </div>
+  </div>
+
+  <!-- Right: Volume -->
+  <div class="player-right">
+    <button id="btnQueue" aria-label="Queue" title="Queue">📋</button>
+    <div class="volume-control">
+      <button id="btnVolume" aria-label="Volume" title="Volume">🔊</button>
+      <div class="volume-slider" id="volumeSlider">
+        <div class="volume-slider-fill" id="volumeFill" style="width:70%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
